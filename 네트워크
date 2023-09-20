@@ -1,1 +1,189 @@
-adasdas
+# 4장- 스위치 : 2계층 장비
+
+# 1.스위치 장비 동작
+
+!https://velog.velcdn.com/images/indongcha/post/be39b1f1-0e20-4265-9214-23f16998f58b/image.png
+
+- 스위치는 네트워크의 가장 핵심적인 장비이며, 2계층의 주소인 MAC 주소를 기반으로 동작합니다.
+- 스위치는 네트워크 중간에서 패킷을 받아 필요한 곳에만 보내주는 중재자 역할을 합니다.
+- 스위치는플러딩, 어드드레스 러닝, 포워딩/필터링 뿐아니라 논리적으로 네트워크를 분리하는 VLAN, 루프를 방지하는 스패닝 트리 프로코톨 등의 기능을 가지고 있습니다.
+
+## 플러딩
+
+!https://velog.velcdn.com/images/indongcha/post/2b6a12f7-65f9-4349-807a-d744e829633f/image.png
+
+- 스위치는 네트워크에서 통신을 중재하는 장비입니다.
+- 스위치의 핵심 역할은 누가 어느 위치에 있는지 파악하고 실제 통신이 시작되면 자신이 알고 있는 위치로 패킷을 정확히 전송하는 것입니다.
+- 이를 위해 스위치는 단말의 MAC주소와 단말의 포트 주소를 매핑한 **MAC 주소 테이블**을 갖고 있습니다.
+    
+    !https://velog.velcdn.com/images/indongcha/post/1e598535-0264-48d2-820b-c425237c9fe2/image.png
+    
+- 스위치는 전송하려는 패킷의 해더 안에서 목적지 MAC 주소를 확인하고 MAC 주소 테이블에서 해당 주소가 어느 포트로 연결되어 있는지 확인하여 해당 패킷을 그 포트로만 전송합니다.
+    
+    !https://velog.velcdn.com/images/indongcha/post/17532661-5808-4750-bc53-b2079016b9b6/image.png
+    
+- 테이블에 없는 도착지 MAC 주소를 가진 패킷이 스위치로 들어오면 스위치는 전체 포트로 패킷을 전송합니다.
+- 이러한 동작을 **플러딩** 이라고 합니다.
+    
+    !https://velog.velcdn.com/images/indongcha/post/2453d419-b4fc-4f64-9749-b3cce3981695/image.png
+    
+- 이러한 플러딩은 스위치의 정상적인 동작이지만, 플러딩이 많이 일어날 수록 스위치는 제 역할을 못하게 됩니다.
+
+## 어드레스 러닝
+
+- MAC 주소 테이블은 어느 위치(포트)에 어떤 장비(MAC 주소)가 연결되어있는지에 대해 저장되어있는 임시 테이블입니다,
+- 스위치가 MAC 주소 테이블에 해당 정보를 기록하고 유지하는 것을 어드레스 러닝이라합니다.
+- 어드레스 러닝은 패킷의 **출발지 MAC 주소**를 이용합니다.
+- 패킷이 특정 포트에 들어오면 스위치는 해당 패킷의 출발지 MAC주소와 포트번호를 MAC 주소 테이블에 기록합니다.
+- 어드레스 러닝은 출발지 MAC 주소를 사용하므로 브로드캐스트나 멀티캐스트에 대한 MAC 주소를 학습할 수 없습니다. 브로드캐스트, 멀티캐스트 주소는 목적지 MAC 주소에서만 사용되기 때문이다.
+    
+    !https://velog.velcdn.com/images/indongcha/post/85973347-be53-4add-a27b-b3e7328b632b/image.png
+    
+- 스위치는 사전에 미리 정의된 MAC 주소 정보도 가지고 있습니다. 이러한 사전에 정의된 MAC 주소는 스위치 간 통신을 위해 사용되는 주소입니다.
+
+## 포워딩/필터링
+
+- MAC 주소 테이블의 정보를 확인 후 그에 맞는 포트로 패킷을 보내는 것을 **포워딩**이라 합니다.
+- 또한 이 때 다른 포트로는 해당 패킷을 보내지 않는데 이를 **필터링**이라 합니다.
+- 포워딩/필터링dms 여러 포트에서 동시에 수행 될 수 있습니다.
+- 스위치는 유니캐스트에 대해서만 포워딩/필터링 작업을 수행합니다.
+- BUM 트래픽이라 부르는 브로드캐스트, 언노운 유니캐스트, 멀티캐스트에 대해서는 플러딩을 합니다.
+- 보통 스위치가 유니캐스트를 플러딩 하는 경우는 거의 없습니다.
+- 패킷을 보내기 전에 상대방 MAC주소를 알아야 하므로 ARP브로드캐스트가 먼저 네트워크에 전달됩니다.
+- ARP브로드캐스트를 통해 MAC주소를 습득하는 과정에서 이미 스위치는 ARP 프로토콜을 주고받은 단말에 대해서 MAC주소와 포트주소를 학습합니다.
+    
+    !https://velog.velcdn.com/images/indongcha/post/572dab89-f636-4861-9d26-d8381e67319f/image.png
+    
+
+---
+
+# 2.VLAN
+
+## VLAN이란?
+
+- VLAN은 물리적 배치와 상관없이 LAN을 논리적으로 분할 구성하는 기술입니다.
+- VLAN을 사용하면 회사의 여러부서가 하나의 네트워크를 사용하면서 각 부서끼리는 분리된 네트워크로 구성할 수 있습니다.
+    
+    !https://velog.velcdn.com/images/indongcha/post/27e915ed-b15b-43cb-896e-9c1de96a5b04/image.png
+    
+- VLAN을 나누면 유니캐스트 뿐아니라, 브로드 캐스트로도 각 VLAN간 통신할 수 없습니다.
+- VLAN 간 통신을 하기 위해서는 3계층 장비가 필요합니다.
+    
+    !https://velog.velcdn.com/images/indongcha/post/5e079310-acc0-484b-ac02-ddd6bedfafd9/image.png
+    
+- VLAN을 사용하면 물리적 구성과 상관없이 네트워크를 분리할 수 있습니다.
+- 즉, 두 스위치가 물리적으로 떨어져있어도 각 스위치에서 나눠져있는 같은 VLAN은 하나의 네트워크로 동작합니다.
+    
+    !https://velog.velcdn.com/images/indongcha/post/9e02fe53-e0d7-4fee-ac45-c9705e756bb5/image.png
+    
+- 이때 각 단말간은 3계층 장비를 통해 통신하게 됩니다.
+
+## VLAN의 종류와 특징
+
+- VLAN 할당 방식은 포트 기반과, MAC주소 기반이 있습니다.
+- 일반적으로 언급하는 VLAN은 포트 기반 VLAN입니다.
+- 포트 기반 VLAN은 포트와 VLAN을 매핑합니다.
+- 포트 기반의 VLAN에서 VLAN 선정 기준은 스위치 포트 입니다.
+- 포트 기반의 VLAN에서는 VLAN에 포트가 할당된다 볼 수 있고, 해당 포트를 사용해야 단말이 해당 VLAN에 접속할 수 있습니다.
+- MAC 기반 VLAN은 단말의 MAC 주소와 VLAN을 매핑합니다.
+- MAC 기반 VLAN에서 VLAN 선정 기준은 단말의 MAC 주소입니다.
+- MAC 기반 VLAN에서는 포트가 바뀌어도 단말의 MAC주소가 기록된 VLAN에 접속하게 됩니다.
+    
+    !https://velog.velcdn.com/images/indongcha/post/5e3ade9b-286d-4673-b5be-eaacd2bd868e/image.png
+    
+    !https://velog.velcdn.com/images/indongcha/post/9885404e-b9a0-47bd-b7f2-3029aa97fd54/image.png
+    
+
+## VLAN 모드(Trunk/Access) 동작방식
+
+- 포트 기반의 VLAN에서는 스위치의 각 포트에 사용할 VLAN을 설정합니다.
+- 각 단말은 한 대의 스위치에 연결되더라도 서로 다른 VLAN이 설정된 경우 통신을 할 수 없습니다.
+- 비용이 비싼 스위치를 효율적으로 사용할 수 있습니다.
+    
+    !https://velog.velcdn.com/images/indongcha/post/a1caf946-d60f-4d72-9136-5fff5e730ae0/image.png
+    
+- 여러 VLAN을 서로 연결하는 경우에 각 VLAN끼리 통신하기 위해서는 VLAN의 갯수만큼 포트가 필요합니다.
+- VLAN으로 분할된 스위치는 물리적으로 별도의 스위치처럼 취급하기 때문입니다.
+    
+    !https://velog.velcdn.com/images/indongcha/post/1345f195-c4e1-4ec5-93ab-e9f555ef5b79/image.png
+    
+- 위 그림처럼 스위치가 3개의 VLAN을 사용하는 경우 각 VLAN이 통신하려면 3개의 포트가 필요합니다.
+- VLAN을 많이 사용하는 중, 대형 네트워크에서는 더 많은 포트가 낭비될 것입니다.
+
+!https://velog.velcdn.com/images/indongcha/post/c0b0526c-b7c6-4ab6-982a-2ee048e4a68b/image.png
+
+- 이 문제를 해결하기 위한 기능이 **VLAN 태그** 입니다.
+- VLAN 태그 기능을 사용할 수 있는 포트를 **태그 포트, 트렁크 포트**라 합니다.
+- 이를 사용하면 하나의 포트에서 여러 VLAN이 전송을 할 수 있게 해줍니다.
+- 송신 측에서는 태그 포트로 패킷을 보낼 때 VLAN ID를 붙여서 보내고 태그 포트에서는 VLAN ID를 제거 후 해당 VLAN으로 패킷을 보내 수신 측에 전달될 수 있게 합니다.
+    
+    !https://velog.velcdn.com/images/indongcha/post/a742c758-471c-4858-bf02-78edef6a7f4b/image.png
+    
+- 태그 포트를 사용하면 VLAN 끼리 통신하기 위해 낭비되던 포트를 줄일 수 있습니다.
+- 태그 포트를 사용하면서 MAC 주소 테이블에도 변화가 일어나게되었습니다.
+    
+    !https://velog.velcdn.com/images/indongcha/post/06bf5433-b95c-4f84-a6d8-86069e21cc4d/image.png
+    
+- 위 그림을 보면 VLAN 필드가 추가된 것을 볼 수 있습니다.
+- 다른 VLAN끼리 통신하지 못하게 VLAN 필드를 사용합니다. 즉, VLAN으로 네트워크를 분리하면 각 VLAN 마다 MAC주소 테이블이 존재하는 것 처럼 동작합니다.
+- 일반적인 포트를 언태그 포트 또는 엑세스 포트라 하고 VLAN끼리 통신할 수 있도록 하는 포트는 태그포트 또는 트렁크포트라 부릅니다.
+- 여러 VLAN으로 통신하기 위해서 언태그 포트를 사용하고, 하나의 네트워크로 통신하기 위해서는 태그 포트를 사용합니다.
+    
+    !https://velog.velcdn.com/images/indongcha/post/ba5b7437-d898-4031-9e0a-f5239e833b72/image.png
+    
+    ### **3. STP**
+    
+    > SPoF(Single Point of Failure) : 단일 장애점, 하나의 시스템이나 구성 요소에서 에러 발생시 전체 시스템 작동이 멈추는 요소
+    > 
+    
+    **1)루프**
+    
+    (1)정의 : SPoF를 피하기 위해 스위치 두 대로 네트워크를 디자인하지만, 두 대 이상의 스위츠로 디자인하면 패킷이 네트워크를 따라 계속 전송해 네트워크의 마비되는 현상
+    
+    (2)원인
+    
+    - 브로드캐스트 스톰 : 루프 구조로 네트워크가 연결된 상태에서 단말에서 브로드캐스트 발생
+    - MAC 어드레스 플래핑(MAC Address Flapping): 직접 전달되는 패킷과 스위치를 돌아 들어간 패킷 간의 포트가 달라 MAC 주소의 정상적인 학습이 불가능
+    
+    **2)STP(스패닝 트리 프로토콜 : Spanning Tree Protocol)**
+    
+    (1)정의 : 루프를 확인해 적절히 포트를 사용하지 못하게 만들어 루프를 예방하는 매커니즘(=>BPDU:Bridge Protocol Data Unit 이용)
+    
+    (2)상태 및 변경 과정
+    
+    - Blocking:패킷 데이터 차단,BPUD데이터 기다림
+    - Listening:해당 포트가 전송 상태로 변경 결정, 준비, BPUD정보 전송, 15초 대기
+    - Learning:MAC 주소 러닝, 15초 동안 대기
+    - Forwarding:패킷 포워딩, 정상적인 통신
+    
+    (3)STP 동작 방식
+    
+    a.하나의 루트 스위치 선정
+    
+    :  BPUD를 옆 스위치로 전달
+    
+    b.루트가 아닌 스위치 중 하나의 루트 스위치 선정
+    
+    : 루트 브릿지에서 보낸 BPUD를 받는 포트
+    
+    c.하나의 세그먼트에 하나의 지정 포트 선정
+    
+    :BPUD가 전달되는 포트
+    
+    **3)RSTP,MST**
+    
+    :블로킹 포트가 포워딩 상태로 변경될 때까지 30-50초 소요 문제 해결을 위해 더 향상된 STP 형식 등장
+    
+    **(1)RSTP(Rapid Spanning Tree Protocol)**
+    
+    :백업 경로를 활성화하는데 걸리는 시간 문제 해결을 위해 개발
+    
+    =>BPUD 메시지 형식이 다양해져 다양한 정보를 주위 스위치와 주고 받음
+    
+    => 토폴로지 변경이 일어난 스위치 자신이 모든 네트워크에 토폴로지 변경을 직접 전파
+    
+    =>2-3초 안에 복구 가능
+    
+    **(2)MST(Multiple Spanning Tree Protocol)**
+    
+    :여러 개의 VLAN을 그룹으로 묶고, 그 그룹마다 별도의 스패닝 트리가 동작
