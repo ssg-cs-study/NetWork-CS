@@ -15,7 +15,7 @@
 - LAN과 LAN또는 LAN과 WAN을 연결한다.
 - 라우터는 자신이 모르는 목적지 주소를 가진 패킷은 버린다.그렇기때문에 충분한 경로 정보를 가지고 있어야 라우터가 정상작동할 수 있다.
 
--이미지 추가예정
+<image src="https://github.com/ssg-cs-study/NetWork-CS/blob/main/%EC%8B%A0%EC%98%81/image/cs_study_1.png">
 
 ※라우팅(Routing)이란?
 
@@ -40,7 +40,7 @@
 > -IP주소를 입력할때 사용된 IP주소와 서브넷 마스크로 해당 IP주소가 속한 네트워크 주소 정보를 알수 있다.이때 라우터는 해당 네트워크에 대한 라우팅 테이블을 자동으로 생성한다.
 > 
 
--이미지 추가예정
+<image src="https://github.com/ssg-cs-study/NetWork-CS/blob/main/%EC%8B%A0%EC%98%81/image/cs_study_2.png">
 
 ※해당 네트워크 설정을 삭제하지 않는 이상 사라지지 않는다.
 
@@ -50,7 +50,8 @@
 > -관리자가 경로를 직접 지정해 입력하는 것
 > 
 
--이미지 추가예정
+<image src="https://github.com/ssg-cs-study/NetWork-CS/blob/main/%EC%8B%A0%EC%98%81/image/cs_study_3.png">
+
 
 > **3.다이나믹 라우팅(Dynamic Routing)**
 > 
@@ -64,7 +65,7 @@
 > -장애발생시 관리자의 개입없이 라우터끼리의 정보교환만으로 경로를 우회할수 있다.
 > 
 
--이미지 추가예정
+<image src="https://github.com/ssg-cs-study/NetWork-CS/blob/main/%EC%8B%A0%EC%98%81/image/cs_study_4.png">
 
 ↑자신이 광고할(옆 라우터에게 전달할)네트워크를 선언한다.
 
@@ -74,7 +75,7 @@
 다음 라우터까지의 최적의 경로로 포워딩할것이기 때문이다.
 ```
 
--이미지 추가예정
+<image src="https://github.com/ssg-cs-study/NetWork-CS/blob/main/%EC%8B%A0%EC%98%81/image/cs_study_5.png">
 
 ### 4️⃣라우팅 프로토콜
 
@@ -94,7 +95,7 @@
 
 → KT,LG U+,SKT등의 통신사는 하나이상의 AS를 운영한다.
 
--이미지 추가예정
+<image src="https://github.com/ssg-cs-study/NetWork-CS/blob/main/%EC%8B%A0%EC%98%81/image/cs_study_6.png">
 
 - IGP프로토콜로는 OSPF, EIGRP, RIP, IS-IS등이 있다.
 - IGP의 OSPF의 경우 네트워크를 AREA단위로 나누어 구분하고 AREA 0(Backbone Area)를 통해 모든 AREA들이 통신을한다.(→다른 AREA들을 연결시켜주는 경계 라우터)
